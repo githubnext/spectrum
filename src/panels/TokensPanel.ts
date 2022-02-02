@@ -48,9 +48,9 @@ export class TokensPanel {
       // If a webview panel does not already exist create and show a new one
       const panel = window.createWebviewPanel(
         // Panel view type
-        "showTokens",
+        "tokensPanel",
         // Panel title
-        "Theme Tokens",
+        "Spectrum 🌈",
         // The editor column the panel should be displayed in
         ViewColumn.One,
         // Extra panel configurations
