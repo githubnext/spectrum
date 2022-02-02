@@ -1,4 +1,4 @@
-import { VSCodeButton, VSCodeTextArea, VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
+import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
 import { matchSorter } from "match-sorter";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -38,10 +38,8 @@ function App() {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      console.log(event);
       const data = event.data;
       if (data.command === "updateTheme") {
-        console.log("here!");
         setCssVariables(getColorVariables());
       }
     };
@@ -53,7 +51,7 @@ function App() {
     };
   }, []);
 
-  const filteredKeys = matchSorter(Object.keys(cssVariables), search);
+  const filteredKeys = matchSorter(Object.keys(cssVariables), search, {});
 
   return (
     <main className="relative">
@@ -68,7 +66,7 @@ function App() {
           placeholder="Filter by variable name"
         />
       </section>
-      <section aria-label="Variables grid" className="px-8 pt-4 pb-8">
+      <section aria-label="Variables grid" className="px-4 pt-4 pb-4">
         <ul className="grid gap-8 swatch-grid">
           {filteredKeys.map((key) => (
             <li key={key}>
@@ -84,6 +82,13 @@ function App() {
               </div>
             </li>
           ))}
+          {filteredKeys.length === 0 && (
+            <div>
+              <p>
+                No variables found for query: <span className="font-bold">{search}</span>
+              </p>
+            </div>
+          )}
         </ul>
       </section>
     </main>
