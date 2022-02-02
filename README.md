@@ -1,26 +1,27 @@
-# Hello World (React + Vite)
+# Theme Token List
 
-This is an implementation of the default [Hello World](../default/hello-world) sample extension that demonstrates how to set up and use a [React](https://reactjs.org/) + [Vite](https://vitejs.dev/) + [Webview UI Toolkit](https://github.com/microsoft/vscode-webview-ui-toolkit) webview extension.
+This is a VSCode extension (webview) that helps you find and copy a VSCode theme CSS variable quickly and easily! No more messing around with the Chrome dev tools – fire up this webview and find what you're looking for, fast.
 
-![A screenshot of the sample extension.](./assets/helloworld-screenshot.png)
+![Screen Shot 2022-02-02 at 4 13 15 PM](https://user-images.githubusercontent.com/5148596/152238301-cea849d3-442a-46f6-afd2-838e5a17c321.png)
 
-## Documentation
+## Usage
+Once installed, open the webview by invoking the **Show theme tokens** command from the command palette.
 
-For a deeper dive into how this sample works, read the guides below.
+![Screen Shot 2022-02-02 at 4 21 12 PM](https://user-images.githubusercontent.com/5148596/152239289-2d32e330-f03b-4b9b-bd5b-3507926f83ff.png)
 
-- [Extension structure](./docs/extension-structure.md)
-- [Extension commands](./docs/extension-commands.md)
-- [Extension development cycle](./docs/extension-development-cycle.md)
+Once the webview is open, filter the grid of swatches via the text field at the top of the screen. To copy a value, click a swatch and the VSCode quickpick UI will pop up. From there you can copy either the:
+- Fully qualified CSS variable
+- Raw CSS variable name
+- Hex/RGB value
 
-## Run The Sample
+![Screen Shot 2022-02-02 at 4 21 47 PM](https://user-images.githubusercontent.com/5148596/152239366-5c1d3485-8b8e-4efc-95e9-bda1a55815bb.png)
+
+
+## Local Development
+
+### Dependencies
 
 ```bash
-# Copy sample extension locally
-npx degit microsoft/vscode-webview-ui-toolkit-samples/react/hello-world-vite hello-world
-
-# Navigate into sample directory
-cd hello-world
-
 # Install dependencies for both the extension and webview UI source code
 npm run install:all
 
@@ -31,7 +32,8 @@ npm run build:webview
 code .
 ```
 
-Once the sample is open inside VS Code you can run the extension by doing the following:
+### Running the extension
+Once the extension is open inside VS Code you can run the extension by doing the following:
 
 1. Press `F5` to open a new Extension Development Host window
 2. Inside the host window, open the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and type `Hello World`
