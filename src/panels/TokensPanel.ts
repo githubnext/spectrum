@@ -1,4 +1,4 @@
-import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from "vscode";
+import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn, env } from "vscode";
 import { getUri } from "../utilities/getUri";
 
 export class TokensPanel {
@@ -126,17 +126,24 @@ export class TokensPanel {
    */
   private _setWebviewMessageListener(webview: Webview) {
     webview.onDidReceiveMessage(
-      (message: any) => {
+      async (message: any) => {
         const command = message.command;
-        const text = message.text;
+        const payload = message.payload;
 
         switch (command) {
-          case "hello":
-            // Code that should run in response to the hello message command
-            window.showInformationMessage(text);
-            return;
-          // Add more switch case statements here as more webview message commands
-          // are created within the webview context (i.e. inside media/main.js)
+          case "copyThemeVariable":
+            const quickPickOptions = [`var(${payload.name})`, payload.name, payload.value].map(
+              (option) => `Copy: ${option}`
+            );
+            const result = await window.showQuickPick(quickPickOptions, {
+              placeHolder: "Select a variable to copy",
+            });
+            if (result) {
+              const trimmedResult = result.replace("Copy: ", "");
+              await env.clipboard.writeText(trimmedResult);
+              await window.showInformationMessage(`Copied ${trimmedResult} to clipboard.`);
+            }
+            break;
         }
       },
       undefined,

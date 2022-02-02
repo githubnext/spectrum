@@ -1,12 +1,11 @@
 import { matchSorter } from "match-sorter";
 import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
 
+import { vscode } from "./utilities/vscode";
 import "./App.css";
 import { Swatch } from "./components/swatch";
 import { getColorVariables } from "./utilities/helpers";
-import { Toolbar } from "./components/toolbar";
 
 function App() {
   const [activeVar, setActiveVar] = useState("");
@@ -35,6 +34,13 @@ function App() {
   const handleClick = useCallback(
     (varName) => {
       setActiveVar(varName);
+      vscode.postMessage({
+        command: "copyThemeVariable",
+        payload: {
+          name: varName,
+          value: cssVariables[varName],
+        },
+      });
     },
     [setActiveVar]
   );
@@ -56,7 +62,12 @@ function App() {
         <ul className="grid gap-8 swatch-grid">
           {filteredKeys.map((key) => (
             <li key={key}>
-              <Swatch onClick={handleClick} varName={key} value={cssVariables[key]} />
+              <Swatch
+                isActive={key === activeVar}
+                onClick={handleClick}
+                varName={key}
+                value={cssVariables[key]}
+              />
             </li>
           ))}
           {filteredKeys.length === 0 && (
@@ -68,9 +79,6 @@ function App() {
           )}
         </ul>
       </section>
-      <AnimatePresence>
-        {activeVar && <Toolbar varName={activeVar} value={cssVariables[activeVar]} />}
-      </AnimatePresence>
     </main>
   );
 }
