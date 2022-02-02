@@ -5,3 +5,7 @@
 .swatch-grid {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
+
+.copy-button-bg {
+  background: linear-gradient(to left, transparent, var(--vscode-input-background));
+}
