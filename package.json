@@ -1,7 +1,7 @@
 {
   "name": "spectrum",
   "displayName": "Spectrum",
-  "publisher": "githubnext",
+  "publisher": "githubocto",
   "description": "An extension that helps you quickly find and copy a VSCode theme token or underlying color value.",
   "version": "0.0.1",
   "engines": {
