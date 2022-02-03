@@ -47,7 +47,7 @@ function App() {
 
   return (
     <main className="relative">
-      <section className="p-4 sticky top-0 bg-[color:var(--vscode-editor-background)]">
+      <section className="p-4 sticky top-0 bg-[color:var(--vscode-editor-background)] z-50">
         <VSCodeTextField
           onInput={(e) => {
             // @ts-ignore
@@ -59,25 +59,27 @@ function App() {
         />
       </section>
       <section aria-label="Variables grid" className="px-4 pt-4 pb-4">
-        <ul className="grid gap-8 swatch-grid">
-          {filteredKeys.map((key) => (
-            <li key={key}>
-              <Swatch
-                isActive={key === activeVar}
-                onClick={handleClick}
-                varName={key}
-                value={cssVariables[key]}
-              />
-            </li>
-          ))}
-          {filteredKeys.length === 0 && (
-            <div>
-              <p>
-                No variables found for query: <span className="font-bold">{search}</span>
-              </p>
-            </div>
-          )}
-        </ul>
+        {filteredKeys.length === 0 && (
+          <div>
+            <p>
+              No variables found for query: <span className="font-bold">{search}</span>
+            </p>
+          </div>
+        )}
+        {filteredKeys.length > 0 && (
+          <ul className="grid gap-8 swatch-grid">
+            {filteredKeys.map((key) => (
+              <li key={key}>
+                <Swatch
+                  isActive={key === activeVar}
+                  onClick={handleClick}
+                  varName={key}
+                  value={cssVariables[key]}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </main>
   );
