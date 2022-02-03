@@ -1,4 +1,14 @@
-import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn, env } from "vscode";
+import {
+  Disposable,
+  Webview,
+  WebviewPanel,
+  window,
+  Uri,
+  ViewColumn,
+  env,
+  ExtensionMode,
+  ExtensionContext,
+} from "vscode";
 import { getUri } from "../utilities/getUri";
 
 export class TokensPanel {
@@ -12,7 +22,7 @@ export class TokensPanel {
    * @param panel A reference to the webview panel
    * @param extensionUri The URI of the directory containing the extension
    */
-  private constructor(panel: WebviewPanel, extensionUri: Uri) {
+  private constructor(panel: WebviewPanel, context: ExtensionContext) {
     this._panel = panel;
 
     // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
@@ -20,7 +30,7 @@ export class TokensPanel {
     this._panel.onDidDispose(this.dispose, null, this._disposables);
 
     // Set the HTML content for the webview panel
-    this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri);
+    this._panel.webview.html = this._getWebviewContent(this._panel.webview, context);
 
     // Set an event listener to listen for messages passed from the webview context
     this._setWebviewMessageListener(this._panel.webview);
@@ -40,7 +50,7 @@ export class TokensPanel {
    *
    * @param extensionUri The URI of the directory containing the extension.
    */
-  public static render(extensionUri: Uri) {
+  public static render(context: ExtensionContext) {
     if (TokensPanel.currentPanel) {
       // If the webview panel already exists reveal it
       TokensPanel.currentPanel._panel.reveal(ViewColumn.One);
@@ -60,7 +70,7 @@ export class TokensPanel {
         }
       );
 
-      TokensPanel.currentPanel = new TokensPanel(panel, extensionUri);
+      TokensPanel.currentPanel = new TokensPanel(panel, context);
     }
   }
 
@@ -93,11 +103,17 @@ export class TokensPanel {
    * @returns A template string literal containing the HTML that should be
    * rendered within the webview panel
    */
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
-    // The CSS file from the React build output
-    const stylesUri = getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.css"]);
-    // The JS file from the React build output
-    const scriptUri = getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.js"]);
+  private _getWebviewContent(webview: Webview, context: ExtensionContext) {
+    const extensionUri = context.extensionUri;
+    const isProduction = context.extensionMode === ExtensionMode.Production;
+
+    // This feels like a hack, but I couldn't get the webview to load in production otherwise.
+    const stylesUri = isProduction
+      ? webview.asWebviewUri(Uri.joinPath(extensionUri, "./out/webview-ui/build/assets/index.css"))
+      : getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.css"]);
+    const scriptUri = isProduction
+      ? webview.asWebviewUri(Uri.joinPath(extensionUri, "./out/webview-ui/build/assets/index.js"))
+      : getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.js"]);
 
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
     return /*html*/ `
