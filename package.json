@@ -23,7 +23,7 @@
     "commands": [
       {
         "command": "spectrum.showTokens",
-        "title": "Show theme tokens 🌈",
+        "title": "Show theme tokens",
         "category": "Spectrum",
         "icon": "$(paintcan)"
       }
