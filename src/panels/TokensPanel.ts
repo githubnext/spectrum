@@ -1,13 +1,11 @@
 import {
   Disposable,
+  env,
+  ExtensionContext,
+  ViewColumn,
   Webview,
   WebviewPanel,
   window,
-  Uri,
-  ViewColumn,
-  env,
-  ExtensionMode,
-  ExtensionContext,
 } from "vscode";
 import { getUri } from "../utilities/getUri";
 
@@ -105,15 +103,8 @@ export class TokensPanel {
    */
   private _getWebviewContent(webview: Webview, context: ExtensionContext) {
     const extensionUri = context.extensionUri;
-    const isProduction = context.extensionMode === ExtensionMode.Production;
-
-    // This feels like a hack, but I couldn't get the webview to load in production otherwise.
-    const stylesUri = isProduction
-      ? webview.asWebviewUri(Uri.joinPath(extensionUri, "./out/webview-ui/build/assets/index.css"))
-      : getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.css"]);
-    const scriptUri = isProduction
-      ? webview.asWebviewUri(Uri.joinPath(extensionUri, "./out/webview-ui/build/assets/index.js"))
-      : getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.js"]);
+    const stylesUri = getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.css"]);
+    const scriptUri = getUri(webview, extensionUri, ["webview-ui", "build", "assets", "index.js"]);
 
     // Tip: Install the es6-string-html VS Code extension to enable code highlighting below
     return /*html*/ `

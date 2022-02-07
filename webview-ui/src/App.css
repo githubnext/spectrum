@@ -2,6 +2,10 @@
 @tailwind utilities;
 @tailwind components;
 
+body {
+  padding: 0;
+}
+
 .swatch-grid {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }

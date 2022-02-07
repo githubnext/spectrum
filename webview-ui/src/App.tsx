@@ -1,6 +1,7 @@
 import { matchSorter } from "match-sorter";
 import { useCallback, useEffect, useState } from "react";
 import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
+import useScrollPosition from "@react-hook/window-scroll";
 
 import { vscode } from "./utilities/vscode";
 import "./App.css";
@@ -8,11 +9,12 @@ import { Swatch } from "./components/swatch";
 import { getColorVariables } from "./utilities/helpers";
 
 function App() {
+  const scrollY = useScrollPosition();
   const [activeVar, setActiveVar] = useState("");
   const [search, setSearch] = useState("");
-  const [cssVariables, setCssVariables] = useState<Record<string, string>>(() =>
-    getColorVariables()
-  );
+  const [cssVariables, setCssVariables] = useState<Record<string, string>>(() => {
+    return getColorVariables();
+  });
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -47,7 +49,11 @@ function App() {
 
   return (
     <main className="relative">
-      <section className="p-4 sticky top-0 bg-[color:var(--vscode-editor-background)] z-50">
+      <section
+        className={`
+      ${scrollY > 0 ? "shadow-lg" : ""}
+      p-4 sticky transition-shadow top-0 bg-[color:var(--vscode-editor-background)] border-b border-[color:var(--vscode-editor-lineHighlightBorder)] z-50
+      `}>
         <VSCodeTextField
           onInput={(e) => {
             // @ts-ignore
