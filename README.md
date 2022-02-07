@@ -7,7 +7,7 @@ This is a VSCode extension (webview) that helps you find and copy a VSCode theme
 ## Usage
 Once installed, open the webview by invoking the **Spectrum: Show theme tokens** command from the command palette.
 
-![Screen Shot 2022-02-02 at 4 45 05 PM](https://user-images.githubusercontent.com/5148596/152242526-1b87e952-1c9a-4a94-a78a-ee5740d3b580.png)
+![Screen Shot 2022-02-07 at 11 16 35 AM](https://user-images.githubusercontent.com/5148596/152827601-9354c604-d0d8-4c38-977d-9978041bf3e5.png)
 
 Once the webview is open, filter the grid of swatches via the text field at the top of the screen. To copy a value, click a swatch and the VSCode quickpick UI will pop up. From there you can copy either the:
 - Fully qualified CSS variable
